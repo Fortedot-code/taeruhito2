@@ -1,23 +1,16 @@
-import { useState } from 'react'
-import { Sprite, useTick } from '@inlet/react-pixi'
+import { useEffect, useState } from 'react'
+import { Sprite } from '@inlet/react-pixi'
 function HumanAnimate() {
-    // TODO: 2枚の絵が交互にアニメーションするようロジックを修正
+    // 2枚の絵が交互にアニメーション
     const [x, setX] = useState(0)
-    let counter = 0
-    useTick(delta => {
-      counter += delta
-      let change
-      if (counter > 300) {
-        counter = 0
-        change = true
-      } else if (counter > 30) {
-        change = true
-      } else {
-        change = false
-      }
-      const xVal = change ? 1080 : 0
-      setX(xVal)
-    })
+    useEffect(() => {
+      let xVal = 0
+      const interval = setInterval(() => {
+        xVal = xVal == 0 ? 1080 : 0
+        setX(xVal)
+      }, 1000);
+      return () => clearInterval(interval)
+    }, [])
     const humanImage = `${process.env.PUBLIC_URL}/img/human/01_normal.png`
     return (
       <Sprite

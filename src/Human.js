@@ -11,7 +11,9 @@ function HumanAnimate() {
       }, 1000);
       return () => clearInterval(interval)
     }, [])
-    const humanImage = `${process.env.PUBLIC_URL}/img/human/01_normal.png`
+    // let picName = '01_normal'
+    let picName = '02_headtap'
+    const humanImage = `${process.env.PUBLIC_URL}/img/human/${picName}.png`
     return (
       <Sprite
         image={ humanImage }

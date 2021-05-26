@@ -7,22 +7,27 @@ function HumanAnimate() {
       let xVal = 0
       const interval = setInterval(() => {
         xVal = xVal == 0 ? 1080 : 0
-        setX(xVal)
+        setX(xVal)    
       }, 1000);
       return () => clearInterval(interval)
     }, [])
-    // let picName = '01_normal'
-    let picName = '02_headtap'
-    const humanImage = `${process.env.PUBLIC_URL}/img/human/${picName}.png`
+
     return (
       <Sprite
-        image={ humanImage }
+        image={ humanImage() }
         scale={{ x: 1, y: 1 }}
         anchor={0.5}
         x={x}
         y={960}
       />
     )
+}
+
+function humanImage() {
+  let picName
+  picName = '01_normal'
+  // picName = '02_headtap'
+  return `${process.env.PUBLIC_URL}/img/human/${picName}.png`
 }
 
 export default HumanAnimate

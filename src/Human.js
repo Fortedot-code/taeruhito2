@@ -14,7 +14,13 @@ function HumanAnimate() {
       // 4秒おきにアニメーションパターンを変更（試行）
       let picName = '01_normal'
       const interval2 = setInterval(() => {
-        picName = picName === '01_normal' ? '02_headtap' : '01_normal'
+        if (picName === '01_normal') {
+          picName = '02_headtap'
+        } else if (picName === '02_headtap') {
+          picName = '03_bodytap'
+        } else if (picName === '03_bodytap') {
+          picName = '01_normal'
+        }
         setPic(picName)
       }, 4000);
       return () => clearInterval(interval2)

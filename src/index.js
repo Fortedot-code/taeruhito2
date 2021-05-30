@@ -1,12 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { RecoilRoot, atom, useRecoilState } from 'recoil';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// 耐える人のライフポイントをRecoilのatomとして作成
+const humanPoint = atom({
+  key: 'humanPoint',
+  default: 100
+});
+
+const Counter = () => {
+  // atomから状態を取り出す
+  const [count, setCount] = useRecoilState(humanPoint);
+
+  return <div onClick={() => setCount((c) => c - 1)}>Clicked: {count}</div>;
+};
+
+const App2 = () => (
+  <Counter />
+)
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <RecoilRoot>
+      <App />
+      <App2 />
+    </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root')
 );

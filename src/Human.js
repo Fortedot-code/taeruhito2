@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Sprite } from '@inlet/react-pixi'
+import { default as PIXI_SOUND } from 'pixi-sound'
+
+const fight_sound = PIXI_SOUND.sound.Sound.from(`${process.env.PUBLIC_URL}/sound/fight.mp3`)
+fight_sound.play()
+
 function HumanAnimate() {
     // 2枚の絵が交互にアニメーション
     const [x, setX] = useState(0)

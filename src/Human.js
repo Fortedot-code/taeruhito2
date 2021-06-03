@@ -1,9 +1,21 @@
 import { useEffect, useState } from 'react'
-import { Sprite } from '@inlet/react-pixi'
+import { Sprite, Text } from '@inlet/react-pixi'
 import { default as PIXI_SOUND } from 'pixi-sound'
+import { humanPoint } from './states/rootStates/humanPoint'
+import { RecoilRoot, useRecoilState } from 'recoil';
 
 const fight_sound = PIXI_SOUND.sound.Sound.from(`${process.env.PUBLIC_URL}/sound/fight.mp3`)
 fight_sound.play()
+
+// TODO: pointerup時のみデクリメントするよう設定
+const Counter = () => {
+  // atomから状態を取り出す
+  const [count, setCount] = useRecoilState(humanPoint)
+  useState(() => {
+    setCount((c) => c - 1)
+  })
+  return <Text text={count} anchor={0.5} x={150} y={150} />
+}
 
 function HumanAnimate() {
     // 2枚の絵が交互にアニメーション
@@ -18,17 +30,20 @@ function HumanAnimate() {
     }, [])
 
     return (
-      <Sprite
-        image={ humanImage(pic) }
-        scale={{ x: 1, y: 1 }}
-        anchor={0.5}
-        x={x}
-        y={960}
-        interactive={true}
-        pointerup={() => {{
-          setPic(nextPic(pic))
-        }}}
-      />
+      <RecoilRoot>
+        <Sprite
+          image={ humanImage(pic) }
+          scale={{ x: 1, y: 1 }}
+          anchor={0.5}
+          x={x}
+          y={960}
+          interactive={true}
+          pointerup={() => {{
+            setPic(nextPic(pic))
+          }}}
+        />
+        <Counter/>
+      </RecoilRoot>
     )
 }
 

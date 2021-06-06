@@ -5,16 +5,21 @@ import { humanPoint } from './states/rootStates/humanPoint'
 import { RecoilRoot, useRecoilState } from 'recoil';
 
 const fight_sound = PIXI_SOUND.sound.Sound.from(`${process.env.PUBLIC_URL}/sound/fight.mp3`)
-fight_sound.play()
+let not_playing = true
 
-// TODO: pointerup時のみデクリメントするよう設定
 const Counter = () => {
   // atomから状態を取り出す
   const [count, setCount] = useRecoilState(humanPoint)
   useState(() => {
     setCount((c) => c - 1)
   })
-  return <Text text={count} anchor={0.5} x={150} y={150} />
+
+  // countが90を下回ると音楽再生
+  if (count < 90 && not_playing) {
+    not_playing = false
+    fight_sound.play()
+  }
+  return <Text text={count} anchor={0.5} x={150} y={150} interactive={true} click={() => { setCount((c) => c - 1) }} />
 }
 
 function HumanAnimate() {

@@ -17,7 +17,7 @@ Modal.setAppElement('#root');
 
 function HomeModal() {
   let subtitle
-  const [modalIsOpen, setIsOpen] = React.useState(false)
+  const [modalIsOpen, setIsOpen] = React.useState(true)
 
   function openModal() {
     setIsOpen(true)
@@ -34,7 +34,7 @@ function HomeModal() {
 
   return (
     <div>
-      <button onClick={openModal}>Open Modal</button>
+      {/* <button onClick={openModal}>Open Modal</button> */}
       <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
@@ -42,16 +42,8 @@ function HomeModal() {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
-        <button onClick={closeModal}>close</button>
-        <div>I am a modal</div>
-        <form>
-          <input />
-          <button>tab navigation</button>
-          <button>stays</button>
-          <button>inside</button>
-          <button>the modal</button>
-        </form>
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>耐える人</h2>
+        <button onClick={closeModal}>ゲームスタート</button>
       </Modal>
     </div>
   )

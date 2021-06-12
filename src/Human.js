@@ -38,14 +38,21 @@ function HumanAnimate() {
     const [accelerationY, setAccelerationY] = useState(0)
     const [accelerationZ, setAccelerationZ] = useState(0)
 
+    const [rotateBeta, setRotateBeta] = useState(0)
+    const [rotateGamma, setRotateGamma] = useState(0)
+    const [rotateAlpha, setRotateAlpha] = useState(0)
+
     window.addEventListener("devicemotion", (event) => {
-      if (!event.accelerationIncludingGravity) {
-        alert('event.accelerationIncludingGravity is null')
+      if (!event.accelerationIncludingGravity || !event.rotationRate) {
+        // alert('event.accelerationIncludingGravity is null')
         return;
       }
       setAccelerationX(event.accelerationIncludingGravity.x)
       setAccelerationY(event.accelerationIncludingGravity.y)
       setAccelerationZ(event.accelerationIncludingGravity.z)
+      setRotateBeta(event.rotationRate.beta)
+      setRotateGamma(event.rotationRate.gamma)
+      setRotateAlpha(event.rotationRate.alpha)
     })
 
     return (
@@ -65,6 +72,9 @@ function HumanAnimate() {
         <Text text={accelerationX} anchor={0.5} x={150} y={250} interactive={true} />
         <Text text={accelerationY} anchor={0.5} x={150} y={350} interactive={true} />
         <Text text={accelerationZ} anchor={0.5} x={150} y={450} interactive={true} />
+        <Text text={rotateBeta} anchor={0.5} x={150} y={550} interactive={true} />
+        <Text text={rotateGamma} anchor={0.5} x={150} y={650} interactive={true} />
+        <Text text={rotateAlpha} anchor={0.5} x={150} y={750} interactive={true} />
       </RecoilRoot>
     )
 }

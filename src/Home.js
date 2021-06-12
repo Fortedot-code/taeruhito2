@@ -19,6 +19,26 @@ function HomeModal() {
   let subtitle
   const [modalIsOpen, setIsOpen] = React.useState(true)
 
+  // 加速度センサを許可
+  const deviceMotionRequest = () => {
+    if (DeviceMotionEvent.requestPermission) {
+      DeviceMotionEvent.requestPermission()
+        .then(permissionState => {
+          if (permissionState === 'granted') {
+            window.addEventListener("devicemotion", (event) => {
+              if (!event.accelerationIncludingGravity) {
+                alert('event.accelerationIncludingGravity is null')
+                return;
+              }
+            })
+          }
+        })
+        .catch(console.error);
+    } else {
+      alert('DeviceMotionEvent.requestPermission is not found')
+    }
+  }
+
   function openModal() {
     setIsOpen(true)
   }
@@ -29,6 +49,7 @@ function HomeModal() {
   }
 
   function closeModal() {
+    deviceMotionRequest()
     setIsOpen(false)
   }
 

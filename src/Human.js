@@ -14,14 +14,19 @@ const Counter = () => {
     setCount((c) => c - 1)
   })
 
-  // countが60を下回ると音楽再生し30を下回ると停止
-  if (count < 60 && not_playing) {
-    not_playing = false
-    fight_sound.play()
-  } else if (count < 30 && !not_playing) {
-    fight_sound.stop()
+  function countHumanpoint() {
+    setCount((c) => c - 5)
+    // countが60を下回ると音楽再生、30を下回ると停止、0を下回ると100にリセットされモーダルを表示
+    if (count < 0) {
+      setCount(100)
+    } else if (count < 30 && !not_playing) {
+      fight_sound.stop()
+    } else if (count < 60 && not_playing) {
+      not_playing = false
+      fight_sound.play()
+    }
   }
-  return <Text text={count} anchor={0.5} x={150} y={150} interactive={true} click={() => { setCount((c) => c - 5) }} />
+  return <Text text={count} anchor={0.5} x={150} y={150} interactive={true} click={() => { countHumanpoint() }} />
 }
 
 function HumanAnimate() {

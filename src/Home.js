@@ -1,5 +1,7 @@
-import React from 'react'
+import {React, useEffect, useState} from 'react'
 import Modal from 'react-modal'
+import { humanPoint } from './states/rootStates/humanPoint'
+import { RecoilRoot, useRecoilValue } from 'recoil';
 
 const customStyles = {
   content: {
@@ -15,9 +17,18 @@ const customStyles = {
 // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement('#root');
 
-function HomeModal() {
+function ModalLogic() {
   let subtitle
-  const [modalIsOpen, setIsOpen] = React.useState(true)
+  const [modalIsOpen, setIsOpen] = useState(true)
+  // hpが0になったときにmodalを出したい（hpの変更監視ができていない...）
+  const count = useRecoilValue(humanPoint)
+  console.log(count)
+  useEffect(() => {
+    console.log(count)
+    if (count === 100 && !modalIsOpen) {
+      openModal()
+    }
+  }, count)
 
   // 加速度センサを許可
   const deviceMotionRequest = () => {
@@ -54,19 +65,26 @@ function HomeModal() {
   }
 
   return (
-    <div>
-      {/* <button onClick={openModal}>Open Modal</button> */}
-      <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>耐える人</h2>
-        <button onClick={closeModal}>ゲームスタート</button>
-      </Modal>
-    </div>
+    <Modal
+      isOpen={modalIsOpen}
+      onAfterOpen={afterOpenModal}
+      onRequestClose={closeModal}
+      style={customStyles}
+      contentLabel="Example Modal"
+    >
+      <h2 ref={(_subtitle) => (subtitle = _subtitle)}>耐える人</h2>
+      <button onClick={closeModal}>ゲームスタート</button>
+    </Modal>
+  )
+}
+
+function HomeModal() {
+  return (
+    <RecoilRoot>
+      <div>
+        <ModalLogic />
+      </div>
+    </RecoilRoot>
   )
 }
 

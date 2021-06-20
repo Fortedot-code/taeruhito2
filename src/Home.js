@@ -20,15 +20,21 @@ Modal.setAppElement('#root');
 function ModalLogic() {
   let subtitle
   const [modalIsOpen, setIsOpen] = useState(true)
-  // hpが0になったときにmodalを出したい（hpの変更監視ができていない...）
-  const count = useRecoilValue(humanPoint)
-  console.log(count)
+  localStorage.setItem('humanPoint', 100)
+  localStorage.setItem('gameIsActive', false)
   useEffect(() => {
-    console.log(count)
-    if (count === 100 && !modalIsOpen) {
-      openModal()
-    }
-  }, count)
+    const interval = setInterval(() => {
+      const hp = localStorage.getItem('humanPoint')
+      let gameIsActive = localStorage.getItem('gameIsActive')
+      if (!gameIsActive) {
+        openModal()
+        localStorage.setItem('gameIsActive', true)
+        console.log('yes')
+      }
+      console.log(hp)
+      console.log(gameIsActive)
+    }, 1000);
+  }, [])
 
   // 加速度センサを許可
   const deviceMotionRequest = () => {
@@ -60,6 +66,7 @@ function ModalLogic() {
   }
 
   function closeModal() {
+    localStorage.setItem('gameIsActive', true)
     deviceMotionRequest()
     setIsOpen(false)
   }

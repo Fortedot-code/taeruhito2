@@ -8,25 +8,22 @@ const fight_sound = PIXI_SOUND.sound.Sound.from(`${process.env.PUBLIC_URL}/sound
 let not_playing = true
 
 const Counter = () => {
-  // atomから状態を取り出す
-  const [count, setCount] = useRecoilState(humanPoint)
-  useState(() => {
-    setCount((c) => c - 1)
-  })
 
+  const hp = localStorage.getItem('humanPoint')
   function countHumanpoint() {
-    setCount((c) => c - 5)
+    localStorage.setItem('humanPoint', hp - 5)
     // countが60を下回ると音楽再生、30を下回ると停止、0を下回ると100にリセットされモーダルを表示
-    if (count < 0) {
-      setCount(100)
-    } else if (count < 30 && !not_playing) {
+    if (hp < 0) {
+      localStorage.setItem('gameIsActive', false)
+      localStorage.setItem('humanPoint', 100)
+    } else if (hp < 30 && !not_playing) {
       fight_sound.stop()
-    } else if (count < 60 && not_playing) {
+    } else if (hp < 60 && not_playing) {
       not_playing = false
       fight_sound.play()
     }
   }
-  return <Text text={count} anchor={0.5} x={150} y={150} interactive={true} click={() => { countHumanpoint() }} />
+  return <Text text={hp} anchor={0.5} x={150} y={150} interactive={true} click={() => { countHumanpoint() }} />
 }
 
 function HumanAnimate() {
